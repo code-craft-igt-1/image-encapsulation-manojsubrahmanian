@@ -1,9 +1,8 @@
-name: 2019 msbuild
+name: Build and Test on Windows
 
 on: push
 
 env:
-  SOLUTION_FILE_PATH: .
   BUILD_CONFIGURATION: Release
 
 permissions:
@@ -11,27 +10,27 @@ permissions:
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup msbuild
-      uses: microsoft/setup-msbuild@v2
-      with:
-        vs-version: '16.0'
+    - name: Install CMake
+      uses: jwlawson/actions-setup-cmake@v1
+
+    - name: Configure CMake
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_CONFIGURATION}}
 
     - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      run: cmake --build build --config ${{env.BUILD_CONFIGURATION}}
 
     - name: Run executable
       run: |
-         Write-Host "Find and execute"
-         $exePath = Get-ChildItem -Path "x64\Release" -Filter "*.exe" -Recurse | Select-Object -First 1 -ExpandProperty FullName
-         if ($exePath) {
-            Write-Host "Executable found: $exePath"
-            & $exePath
-         } else {
-           Write-Host "No Executable found."
-         }
+        $exePath = "${{github.workspace}}/build/Release/brightener.exe"
+        if (Test-Path $exePath) {
+          Write-Host "Executable found: $exePath"
+          & $exePath
+        } else {
+          Write-Host "No Executable found at $exePath"
+        }
+      shell: pwsh
