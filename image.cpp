@@ -23,8 +23,12 @@ void Image::InitializeRow(int x) {
     }
 }
 
+bool Image::IsValueWithinBounds(int value, int lowerBound, int upperBound) const {
+    return value >= lowerBound && value < upperBound;
+}
+
 bool Image::IsValidIndex(int x, int y) const {
-    return x >= 0 && x < m_rows && y >= 0 && y < m_columns;
+    return IsValueWithinBounds(x, 0, m_rows) && IsValueWithinBounds(y, 0, m_columns);
 }
 
 int Image::GetPixel(int x, int y) const {
@@ -66,7 +70,7 @@ int Image::BrightenRow(int x) {
 
 int Image::Brighten() {
     if (!Validate()) {
-        return -1; //  Indicate invalid image
+        return -1; // Indicate invalid image
     }
 
     int attenuatedPixelCount = 0;

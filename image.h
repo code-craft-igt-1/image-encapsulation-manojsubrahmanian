@@ -13,6 +13,7 @@ class Image {
 
  private:
     bool Validate() const;
+    bool IsValueWithinBounds(int value, int lowerBound, int upperBound) const;
     bool IsValidIndex(int x, int y) const;
     int BrightenPixel(int x, int y);
     int BrightenRow(int x);
