@@ -36,6 +36,17 @@ bool Image::Validate() const {
     return m_columns <= 1024 && m_rows <= 1024;
 }
 
+int Image::BrightenPixel(int x, int y) {
+    int pixelValue = GetPixel(x, y);
+    if (pixelValue > (255 - 25)) {
+        SetPixel(x, y, 255);
+        return 1; // Pixel was attenuated
+    } else {
+        SetPixel(x, y, pixelValue + 25);
+        return 0; // Pixel was brightened
+    }
+}
+
 int Image::Brighten() {
     if (!Validate()) {
         return -1; // Indicate invalid image
@@ -44,12 +55,7 @@ int Image::Brighten() {
     int attenuatedPixelCount = 0;
     for (int x = 0; x < m_rows; x++) {
         for (int y = 0; y < m_columns; y++) {
-            if (GetPixel(x, y) > (255 - 25)) {
-                ++attenuatedPixelCount;
-                SetPixel(x, y, 255);
-            } else {
-                SetPixel(x, y, GetPixel(x, y) + 25);
-            }
+            attenuatedPixelCount += BrightenPixel(x, y);
         }
     }
     return attenuatedPixelCount;

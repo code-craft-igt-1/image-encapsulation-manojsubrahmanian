@@ -13,5 +13,6 @@ class Image {
 
  private:
     bool Validate() const;
+    int BrightenPixel(int x, int y);
     std::unique_ptr<std::unique_ptr<int[]>[]> pixels;
 };
