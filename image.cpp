@@ -3,7 +3,7 @@
 #include <cstdlib>  // For rand() and srand()
 #include <ctime>   // For time()
 #include <memory>
-#include <algorithm> //  For std::transform
+#include <algorithm>  //  For std::transform
 
 Image::Image(int rows, int columns) : m_rows(rows), m_columns(columns) {
     // Seed the random number generator
@@ -70,7 +70,7 @@ int Image::BrightenRow(int x) {
 
 int Image::Brighten() {
     if (!Validate()) {
-        return -1; //  Indicate invalid image
+        return -1;  //  Indicate invalid image
     }
 
     int attenuatedPixelCount = 0;
