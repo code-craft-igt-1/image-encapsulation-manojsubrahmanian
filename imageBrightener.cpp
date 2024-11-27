@@ -1,3 +1,4 @@
+#include <utility>
 #include "./imageBrightener.h"
 
 ImageBrightener::ImageBrightener(std::shared_ptr<Image> image) : m_image(std::move(image)) {}
